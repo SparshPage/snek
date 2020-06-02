@@ -1,8 +1,8 @@
 var cvs = document.getElementById("snek");
 var ctx = cvs.getContext("2d");
 
-let snekwidth = 10;
-let snekHeight = 10;
+let snekwidth = 20;
+let snekHeight = 20;
 var initialLen = 4;
 let T = 20;
 const snek = {
@@ -70,15 +70,21 @@ function eatFood() {
       y: Math.floor(Math.random() * 20 + 2),
     };
     console.log(food.x * snekwidth, food.y * snekwidth);
-    sbody.unshift({ x: head.x, y: head.y });
+    sbody.push({ ...sbody });
+
     console.log(sbody.length);
   }
 }
 
 function die() {
   for (let i = 1; i < sbody.length; i++) {
-    if (sbody[i].x == sbody[0].x && sbody[i].y == sbody[0].y) {
-      alert("game over bitch");
+    if (
+      sbody[i].x == sbody[0].x &&
+      sbody[i].y == sbody[0].y &&
+      sbody.length > 3
+    ) {
+      console.log("dead");
+      alert("Game Over");
       location.reload();
       break;
     }
@@ -108,7 +114,7 @@ function update() {
     y: sbody[0].y + snek.dy * snekHeight,
   });
   eatFood();
-  // die();
+  die();
 }
 
 function draw() {
@@ -121,7 +127,7 @@ function loop() {
   draw();
   bind();
   update();
-  setTimeout(requestAnimationFrame(loop), 1000 / 1000);
+  setTimeout(loop, 1000 / 10);
 }
 
 loop();
